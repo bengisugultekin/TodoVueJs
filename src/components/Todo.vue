@@ -49,14 +49,20 @@ export default {
     deleteTask: function(task) {
       this.tasks.splice(this.tasks.indexOf(task), 1);
     },
-    mounted(){
-      console.log('App mounted!');
-    }, 
-    watch: {
-      tasks: {
-        handler() { console.log('Todos changed!'); },
-        deep: true,
+  },
+  mounted(){
+    console.log('App mounted!');
+    if(localStorage.getItem('todos')){
+      this.tasks = JSON.parse(localStorage.getItem('todos'));
+    }
+  }, 
+  watch: {
+    tasks: {
+      handler() { 
+        console.log('Todos changed!'); 
+        localStorage.setItem('todos', JSON.stringify(this.tasks));
       },
+      deep: true,
     },
   },
 };
@@ -111,9 +117,13 @@ h1 {
   transition: 250ms ease-out;
 }
 .btn:hover,
-.btn:focus {
+.btn:focus{
   color: #fff;
   background: #4fc08d;
+}
+
+.btn:hover > .trash{
+  color: #fff;
 }
 
 form {
@@ -138,14 +148,15 @@ form input:focus {
 }
 
 li {
-  margin-top: 30px;
   list-style: none;
   width: 100%;
+  display: flex;
+  padding: 2.5rem 2rem 0 1rem;
 }
 
 ul {
   list-style-type: none;
-  padding: 0 0 0 3em;
+  padding: 0 0 0 2em;
   margin: 0px;
   width: 100%;
 }
@@ -156,7 +167,7 @@ ul {
 }
 
 .item-remove {
-  margin-left: 0.5em;
+  
   background: none;
   border: 1px solid;
   color: #4fc08d;
@@ -164,12 +175,14 @@ ul {
   line-height: 1;
   width: 2em;
   height: 2em;
-  display: initial;
-  align-items: center;
-  justify-content: center;
   border-radius: 50%;
   font-size: 100%;
+  
 }
 
+
+.custom-control-inline{
+  width: 100%
+}
 
 </style>
