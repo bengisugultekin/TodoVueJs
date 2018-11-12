@@ -1,27 +1,33 @@
 <template>
     <div class="todo">        
         <div class="container">
-            <h1>Tasks</h1>                  
-            <form v-on:submit="addTask">
-                <input type="text" class="add-new-task" v-model="newTask.title" placeholder="Add new task">           
+            <h1>Tasks</h1>    
+            <input type="text" v-model="todo.title" placeholder="Title">     
+                 
+            <form v-on:submit="addTask">               
+                <input type="text" class="add-new-task" v-model="newTask.description" placeholder="Add new task">           
                 <button class="btn" type="submit">Add</button>
             </form>
             <ul>
-                <li class="new-task-li" v-for="task in tasks"> 
+                <li class="new-task-li" v-for="task in todo.tasks"> 
                     <b-form-checkbox v-model="task.completed">
                         <span class="new-task" :class="{completed: task.completed}">
-                        {{task.title}}
+                        {{task.description}}
                         </span>
                     </b-form-checkbox> 
                      <button
                         class="btn item-remove"
                         v-on:click="deleteTask(task)">
                         <font-awesome-icon class="trash" icon="trash" />   
-                     </button>                                
-                    <!-- <input type="checkbox" class="toggle" v-model="task.completed"> -->
-                    
+                     </button>                   
                 </li>
             </ul>
+
+            <button
+              class="btn"
+              v-on:click="createTodoList(todo)">
+              ADD TODO LIST
+            </button>
         </div>        
     </div>
 </template>
@@ -32,35 +38,45 @@ export default {
   data() {
     return {
       newTask: {},
-      tasks: []
+      todo: {
+        title: "",
+        tasks: [],
+      }, 
+      todoList: []    
     };
   },
   methods: {
-    addTask: function(e) {
-      if (this.newTask.title) {
-        this.tasks.push({
-          title: this.newTask.title,
+    addTask: function(e) {           
+      if (this.newTask.description) {        
+        this.todo.tasks.push({          
+          description: this.newTask.description,
           completed: false
         });
-        this.newTask.title = "";
+        this.newTask.description = "";
       }
       e.preventDefault();
-    },
+    },    
     deleteTask: function(task) {
-      this.tasks.splice(this.tasks.indexOf(task), 1);
+      this.todo.tasks.splice(this.todo.tasks.indexOf(task), 1);
     },
+    createTodoList: function(todo) {
+      if(todo.title && todo.tasks.length){
+        this.todoList.push(todo);      
+        localStorage.setItem('todoList', JSON.stringify(this.todoList));
+      }      
+    }
   },
+
   mounted(){
     console.log('App mounted!');
     if(localStorage.getItem('todos')){
-      this.tasks = JSON.parse(localStorage.getItem('todos'));
+      this.todo = JSON.parse(localStorage.getItem('todos'));
     }
   }, 
   watch: {
-    tasks: {
-      handler() { 
-        console.log('Todos changed!'); 
-        localStorage.setItem('todos', JSON.stringify(this.tasks));
+    todo: {
+      handler() {        
+        localStorage.setItem('todos', JSON.stringify(this.todo));
       },
       deep: true,
     },

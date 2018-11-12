@@ -1,17 +1,19 @@
 <template>
   <div id="app">
-    <!-- <img src="./assets/logo.png"> -->
+    <sidebar></sidebar>
     <todo></todo>
   </div>
 </template>
 
 <script>
 import Todo from './components/Todo'
+import Sidebar from './components/Sidebar'
 
 export default {
   name: 'App',
   components: {
-    Todo
+    Todo,
+    Sidebar
   }
 }
 </script>
