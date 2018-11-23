@@ -2,7 +2,7 @@
     <div class="todo">        
         <div class="container">
             <h1>Tasks</h1>    
-            <input type="text" v-model="todo.title" placeholder="Title">     
+            <input type="text" class="todo-title" v-model="todo.title" placeholder="Title">     
                  
             <form v-on:submit="addTask">               
                 <input type="text" class="add-new-task" v-model="newTask.description" placeholder="Add new task">           
@@ -24,9 +24,9 @@
             </ul>
 
             <button
-              class="btn"
+              class="btn btn-save"
               v-on:click="createTodoList(todo)">
-              ADD TODO LIST
+              SAVE TODO LIST
             </button>
         </div>        
     </div>
@@ -63,6 +63,8 @@ export default {
       if(todo.title && todo.tasks.length){
         this.todoList.push(todo);      
         localStorage.setItem('todoList', JSON.stringify(this.todoList));
+        this.todo = ""; //EMİN DEĞİLİM !!!!!!!!
+
       }      
     }
   },
@@ -91,6 +93,26 @@ export default {
   position: relative;
   font-family: "Lato", "Lucida Grande", "Lucida Sans Unicode", Tahoma,
     Sans-Serif;
+}
+
+.todo-title {
+  width: 96%;
+  font-size: 14px;
+  margin: 2em 1em 1em 1.5em;
+  border-radius: 2em;
+  padding: 0.75em 1.5em;
+  background: none;
+  border: #e3e3e3 1px solid;
+  transition: border 250ms ease-out;
+}
+
+.todo-title:focus {
+  border: #4fc08d 1px solid;
+  outline: none;
+}
+
+.btn-save{
+  margin: 3em 1em 1em 1.5em !important;
 }
 
 .completed {
